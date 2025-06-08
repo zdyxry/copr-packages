@@ -1,16 +1,16 @@
 %global debug_package %{nil}
 
-# 仅支持 x86_64 架构，因为上游只提供该架构的预编译二进制文件
-ExclusiveArch:  x86_64
 
 Name:           easytier
 Version:        2.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A simple, secure and scalable overlay network solution
 
 License:        Apache-2.0
 URL:            https://github.com/EasyTier/EasyTier
+ExclusiveArch:  x86_64 aarch64
 Source0:        https://github.com/EasyTier/EasyTier/releases/download/v%{version}/easytier-linux-x86_64-v%{version}.zip
+Source1:        https://github.com/EasyTier/EasyTier/releases/download/v%{version}/easytier-linux-aarch64-v%{version}.zip
 
 BuildRequires:  unzip
 # 需要 systemd 来安装服务文件
@@ -32,7 +32,12 @@ Key features:
 - Subnet proxy: Allows accessing entire subnets through EasyTier nodes
 
 %prep
-%setup -q -c -n %{name}-%{version}
+%ifarch x86_64
+%setup -q -T -a 0 -c %{name}-%{version}
+%endif
+%ifarch aarch64
+%setup -q -T -a 1 -c %{name}-%{version}
+%endif
 
 %build
 # 不需要构建，使用预编译的二进制文件
@@ -44,11 +49,19 @@ mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}%{_sysconfdir}/easytier
 mkdir -p %{buildroot}%{_localstatedir}/log/easytier
 
-# 安装二进制文件（从子目录中）
+# 安装二进制文件（根据架构选择对应的子目录）
+%ifarch x86_64
 install -m 755 easytier-linux-x86_64/easytier-core %{buildroot}%{_bindir}/
 install -m 755 easytier-linux-x86_64/easytier-cli %{buildroot}%{_bindir}/
 install -m 755 easytier-linux-x86_64/easytier-web %{buildroot}%{_bindir}/
 install -m 755 easytier-linux-x86_64/easytier-web-embed %{buildroot}%{_bindir}/
+%endif
+%ifarch aarch64
+install -m 755 easytier-linux-aarch64/easytier-core %{buildroot}%{_bindir}/
+install -m 755 easytier-linux-aarch64/easytier-cli %{buildroot}%{_bindir}/
+install -m 755 easytier-linux-aarch64/easytier-web %{buildroot}%{_bindir}/
+install -m 755 easytier-linux-aarch64/easytier-web-embed %{buildroot}%{_bindir}/
+%endif
 
 # 创建 systemd 服务文件
 cat > %{buildroot}%{_unitdir}/easytier.service << 'EOF'
