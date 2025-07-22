@@ -2,8 +2,8 @@
 
 
 Name:           easytier
-Version:        2.3.1
-Release:        2%{?dist}
+Version:        2.3.2
+Release:        1%{?dist}
 Summary:        A simple, secure and scalable overlay network solution
 
 License:        Apache-2.0
@@ -121,5 +121,8 @@ EOF
 %dir %{_localstatedir}/log/easytier
 
 %changelog
+* Tue Jul 22 2025 zdyxry <zdyxry@gmail.com> - 2.3.2-1
+- Update to EasyTier 2.3.2
+
 * Fri Jun 07 2024 zdyxry <zdyxry@gmail.com> - 2.3.1-1
 - Initial RPM package for EasyTier 2.3.1
