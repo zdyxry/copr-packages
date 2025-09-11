@@ -2,7 +2,7 @@
 
 
 Name:           easytier
-Version:        2.3.2
+Version:        2.4.2
 Release:        1%{?dist}
 Summary:        A simple, secure and scalable overlay network solution
 
@@ -121,6 +121,9 @@ EOF
 %dir %{_localstatedir}/log/easytier
 
 %changelog
+* Thu Sep 11 2025 zdyxry <zdyxry@gmail.com> - 2.4.3-1
+- Update to EasyTier 2.4.3
+
 * Tue Jul 22 2025 zdyxry <zdyxry@gmail.com> - 2.3.2-1
 - Update to EasyTier 2.3.2
 
